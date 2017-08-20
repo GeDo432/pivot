@@ -1,4 +1,5 @@
 package com.orthus.bruhns.pivot
+
 import org.scalatest._
 
 class TestClass extends FreeSpec {
@@ -7,7 +8,7 @@ class TestClass extends FreeSpec {
     val axisTitle = "x-axis"
     val tree = Tree(axisTitle)
     "should contain the root" in {
-      assert(tree.root.getAxisTitle== axisTitle)
+      assert(tree.root.getAxisTitle == axisTitle)
     }
     "should span 0 columns" in {
       assert(tree.root.getSpan == 0)
@@ -25,7 +26,7 @@ class TestClass extends FreeSpec {
   "A big tree" - {
 
     val tree = Tree("X-Achse")
-    val root:Root = tree.root
+    val root: Root = tree.root
     val node11 = tree.addNode(root, Node("1 1"))
     val node22 = tree.addNode(node11, Node("2 2"))
     val node23 = tree.addNode(node11, Node("2 3"))
@@ -110,8 +111,8 @@ class TestClass extends FreeSpec {
         assertResult(node.getLeftColumn + node.getSpan)(node.getRightColumn))
     }
     "calculates left column with invisible tree-parts" in {
-      node37.isVisible=false
-      node38.isVisible=false
+      node37.isVisible = false
+      node38.isVisible = false
 
       assertResult(0)(node11.getLeftColumn)
       assertResult(1)(node22.getLeftColumn)

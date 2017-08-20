@@ -2,6 +2,7 @@ package com.orthus.bruhns.pivot
 
 /**
   * Node in the [[Tree pivot-tree]]
+  *
   * @param name The name to be displayed as header.
   */
 private[pivot] abstract class AbstractNode(name: String) {
@@ -18,19 +19,12 @@ private[pivot] abstract class AbstractNode(name: String) {
 
   /**
     * The row-index (if pivot-header-tree is located on top of pivot-table) of this node.
-    * Index starts with 0 for [[Root root]] node. Invisible and visible [[AbstractNode nodes]] are counted.
+    * Index starts with 0 for [[Root root]] node. Invisible and visible nodes are counted.
+    *
     * @return Row (level) of this node.
     * @see getColumn
     */
-  def getRow:Int
-
-  /**
-    * Add a child (sub-node) to this node.
-    * @param child sub-node
-    */
-  private[pivot] final def addChildren(child: Node*):Unit = {
-    children = children ++ child
-  }
+  def getRow: Int
 
   /**
     * A visible node (except the [[Root root-node]]) spans at least one column
@@ -44,7 +38,39 @@ private[pivot] abstract class AbstractNode(name: String) {
     *
     * @return Number of columns, this node and it's children span.
     */
-  def getSpan:Int = calculateSpan(includeInvisible=false)
+  def getSpan: Int = calculateSpan()
+
+  /**
+    * @return Index of the first spanned column (if pivot-header-tree is located on top of pivot-table). Index starts with 0.
+    * @see getSpan
+    */
+  def getLeftColumn: Int
+
+  /**
+    * @return Index of the last spanned column (if pivot-header-tree is located on top of pivot-table). Index starts with 0.
+    * @see getSpan
+    */
+  def getRightColumn: Int
+
+  /**
+    * @return List of sub-nodes (may be empty)
+    */
+  def getChildren: List[Node] = children
+
+  /**
+    * @return Column number. Index starts with 0 for [[Root root]] node. Invisible and visible nodes are counted.
+    * @see getRow
+    */
+  def getColumn: Int
+
+  /**
+    * Add a child (sub-node) to this node.
+    *
+    * @param child sub-node
+    */
+  private[pivot] final def addChildren(child: Node*): Unit = {
+    children = children ++ child
+  }
 
   /**
     * A node (except the [[Root root-node]]) spans at least one column
@@ -57,19 +83,7 @@ private[pivot] abstract class AbstractNode(name: String) {
     * @param includeInvisible Wether or not to include invisible nodes in the calculation
     * @return Number of columns, this node and it's children span.
     */
-  private[pivot] def calculateSpan(includeInvisible:Boolean = false):Int
-
-  /**
-    * @return Index of the first spanned column (if pivot-header-tree is located on top of pivot-table). Index starts with 0.
-    * @see getSpan
-    */
-  def getLeftColumn:Int
-
-  /**
-    * @return Index of the last spanned column (if pivot-header-tree is located on top of pivot-table). Index starts with 0.
-    * @see getSpan
-    */
-  def getRightColumn:Int
+  private[pivot] def calculateSpan(includeInvisible: Boolean = false): Int
 
   /**
     * Sums up the spans of of nodes, that are located left of the given one.
@@ -78,24 +92,13 @@ private[pivot] abstract class AbstractNode(name: String) {
     * @return Number of columns left from the given child-node.
     * @see getSpan
     */
-   private[pivot] def countColumnsLeftFrom(child: Node, includeInvisible:Boolean):Int = {
+  private[pivot] def countColumnsLeftFrom(child: Node, includeInvisible: Boolean): Int = {
     assert(children.contains(child))
     children
       .takeWhile(_ != child)
       .map(_.calculateSpan(includeInvisible))
       .sum
   }
-
-  /**
-    * @return List of sub-nodes (may be empty)
-    */
-  def getChildren = children
-
-  /**
-    * @return Column number. Index starts with 0 for [[Root root]] node. Invisible and visible [[AbstractNode nodes]] are counted.
-    * @see getRow
-    */
-  def getColumn: Int
 
 
 }

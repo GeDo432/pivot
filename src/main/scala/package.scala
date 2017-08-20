@@ -12,7 +12,7 @@ package com.orthus.bruhns
   *   |  1|                 |Top Header 1  Span=3                         |Top Header 2  Span=3                         |
   *   |  2|                 |             |Sub Header 1.1 |Sub Header 1.2 |             |Sub Header 2.1 |Sub Header 2.2 |
   * }}}
-
+  *
   *
   * {{{
   *   val tree = Tree("x-axis")
